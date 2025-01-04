@@ -3,6 +3,7 @@
 This example demonstrates how to establish a full mesh WebRTC connection between multiple clients using WebAssembly (WASM) and a signaling server. Once the WebRTC connections are established, the clients can disconnect from the signaling server and continue communicating via WebRTC data channels.
 
 ## Features
+
 - **WebRTC Peer-to-Peer Connections**: Establish peer-to-peer connections using WebRTC between multiple clients.
 - **Signaling Server Communication**: Use the signaling server for initial offer/answer exchange and ICE candidate exchange.
 - **Full Mesh Network**: Supports a full mesh WebRTC connection where every client connects to every other client.
@@ -11,6 +12,7 @@ This example demonstrates how to establish a full mesh WebRTC connection between
 - **Log and Debugging**: View detailed logs of WebRTC connection states and data channel messages.
 
 ## Prerequisites
+
 - Go 1.16+ installed.
 - Web browser that supports WebAssembly and WebRTC.
 - A WebRTC signaling server (e.g., the one from this project) running.
@@ -18,6 +20,7 @@ This example demonstrates how to establish a full mesh WebRTC connection between
 ## Setup and Usage
 
 ### Step 1: Run the Signaling Server
+
 Clone the signaling server repository:
 
 ```bash
@@ -27,16 +30,18 @@ git clone https://github.com/AbdelrahmanWM/signalingserver
 Install dependencies and run the signaling server:
 
 ```bash
+cd examples/webrtc_mesh_client
 go run main.go
 ```
 
 This will start the signaling server at `ws://localhost:8090/signalingserver`.
 
 ### Step 2: Set Up the WebRTC Client
+
 Navigate to the `wasm/` directory:
 
 ```bash
-cd wasm
+cd examples/webrtc_mesh_client/wasm
 ```
 
 Build the WASM client:
@@ -47,16 +52,18 @@ GOARCH=wasm GOOS=js go build -o main.wasm main.go
 
 This will generate the `main.wasm` file.
 
-Open `index.html` in your browser (ensure `main.wasm` is in the same directory as `index.html`).
+Open the `index.html` file in more than one browser tab or window. This will simulate multiple clients connecting to the signaling server and interacting with each other. (ensure `main.wasm` is in the same directory as `index.html`).
 
 ### Step 3: Interact with the WebRTC Client
 
 #### Connect to the Signaling Server
+
 Click **"Connect to signaling server"** to establish a WebSocket connection to the signaling server.
 
 - The signaling server handles the offer/answer exchange and ICE candidate exchange.
 
 #### Get Peer IDs
+
 Click **"Get all peer IDs"** to retrieve the list of connected peers from the signaling server.
 
 #### Create Peer Connections
@@ -70,6 +77,7 @@ Click **"Get all peer IDs"** to retrieve the list of connected peers from the si
 - **Send to All**: Broadcast a message to all connected peers via WebRTC data channels.
 
 #### Disconnect from the Signaling Server
+
 Once all peer connections are established, you can disconnect from the signaling server by clicking **"Disconnect"**. The WebRTC data channels will continue to function without the signaling server.
 
 ### Step 4: Full Mesh WebRTC Communication
@@ -86,6 +94,7 @@ Once all peer connections are established, you can disconnect from the signaling
 ## WebRTC Details
 
 ### Peer-to-Peer Connections
+
 Each client creates a WebRTC `RTCPeerConnection` object. This object manages the lifecycle of the peer connection, including:
 
 - **Signaling**: The signaling server is responsible for facilitating the exchange of offer and answer messages between peers, as well as the exchange of ICE candidates.
@@ -99,9 +108,11 @@ Each client creates a WebRTC `RTCPeerConnection` object. This object manages the
 - **Multiple Channels**: You can create multiple data channels per connection if needed, though this example uses only a single channel per connection.
 
 ### ICE Candidate Gathering
+
 WebRTC uses ICE candidates to discover the best network path between peers. These candidates are gathered and sent to the remote peer via the signaling server. The signaling server acts as a relay for exchanging ICE candidates during the initial connection setup phase.
 
 ### Example SDP Message
+
 Here’s an example of an SDP offer message that could be sent between peers during the connection establishment phase:
 
 ```plaintext
@@ -148,4 +159,5 @@ Use the **Logs** section in the UI to monitor the WebRTC connection’s status, 
 - **utils/**: Utility files that may contain helper functions used by other parts of the application.
 
 ## License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
